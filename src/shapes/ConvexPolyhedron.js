@@ -24,7 +24,7 @@ var Transform = require('../math/Transform');
  * @todo Move the clipping functions to ContactGenerator?
  * @todo Automatically merge coplanar polygons in constructor.
  */
-function ConvexPolyhedron(points, faces, uniqueAxes) {
+function ConvexPolyhedron(points, faces, uniqueAxes, faceNormals) {
     Shape.call(this, {
         type: Shape.types.CONVEXPOLYHEDRON
     });
@@ -51,7 +51,7 @@ function ConvexPolyhedron(points, faces, uniqueAxes) {
      * @property faceNormals
      * @type {Array}
      */
-    this.faceNormals = [];
+    this.faceNormals = faceNormals || [];
     this.computeNormals();
 
     this.worldFaceNormalsNeedsUpdate = true;
@@ -118,27 +118,29 @@ ConvexPolyhedron.prototype.computeEdges = function(){
  * @method computeNormals
  */
 ConvexPolyhedron.prototype.computeNormals = function(){
-    this.faceNormals.length = this.faces.length;
+    if(!this.faceNormals.length) {
+        this.faceNormals.length = this.faces.length;
+    
+        // Generate normals
+        for(var i=0; i<this.faces.length; i++){
 
-    // Generate normals
-    for(var i=0; i<this.faces.length; i++){
-
-        // Check so all vertices exists for this face
-        for(var j=0; j<this.faces[i].length; j++){
-            if(!this.vertices[this.faces[i][j]]){
-                throw new Error("Vertex "+this.faces[i][j]+" not found!");
-            }
-        }
-
-        var n = this.faceNormals[i] || new Vec3();
-        this.getFaceNormal(i,n);
-        n.negate(n);
-        this.faceNormals[i] = n;
-        var vertex = this.vertices[this.faces[i][0]];
-        if(n.dot(vertex) < 0){
-            console.error(".faceNormals[" + i + "] = Vec3("+n.toString()+") looks like it points into the shape? The vertices follow. Make sure they are ordered CCW around the normal, using the right hand rule.");
+            // Check so all vertices exists for this face
             for(var j=0; j<this.faces[i].length; j++){
-                console.warn(".vertices["+this.faces[i][j]+"] = Vec3("+this.vertices[this.faces[i][j]].toString()+")");
+                if(!this.vertices[this.faces[i][j]]){
+                    throw new Error("Vertex "+this.faces[i][j]+" not found!");
+                }
+            }
+
+            var n = this.faceNormals[i] || new Vec3();
+            this.getFaceNormal(i,n);
+            n.negate(n);
+            this.faceNormals[i] = n;
+            var vertex = this.vertices[this.faces[i][0]];
+            if(n.dot(vertex) < 0){
+                console.error(".faceNormals[" + i + "] = Vec3("+n.toString()+") looks like it points into the shape? The vertices follow. Make sure they are ordered CCW around the normal, using the right hand rule.");
+                for(var j=0; j<this.faces[i].length; j++){
+                    console.warn(".vertices["+this.faces[i][j]+"] = Vec3("+this.vertices[this.faces[i][j]].toString()+")");
+                }
             }
         }
     }
