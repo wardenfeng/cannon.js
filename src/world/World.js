@@ -961,7 +961,6 @@ World.prototype.emitContactEvents = (function(){
                 beginContactEvent.bodyB = this.getBodyById(additions[i+1]);
                 this.dispatchEvent(beginContactEvent);
             }
-            beginContactEvent.bodyA = beginContactEvent.bodyB = null;
         }
 
         if(hasEndContact){
@@ -970,7 +969,6 @@ World.prototype.emitContactEvents = (function(){
                 endContactEvent.bodyB = this.getBodyById(removals[i+1]);
                 this.dispatchEvent(endContactEvent);
             }
-            endContactEvent.bodyA = endContactEvent.bodyB = null;
         }
 
         additions.length = removals.length = 0;
@@ -992,7 +990,6 @@ World.prototype.emitContactEvents = (function(){
                 beginShapeContactEvent.bodyB = shapeB.body;
                 this.dispatchEvent(beginShapeContactEvent);
             }
-            beginShapeContactEvent.bodyA = beginShapeContactEvent.bodyB = beginShapeContactEvent.shapeA = beginShapeContactEvent.shapeB = null;
         }
 
         if(hasEndShapeContact){
@@ -1005,7 +1002,6 @@ World.prototype.emitContactEvents = (function(){
                 endShapeContactEvent.bodyB = shapeB.body;
                 this.dispatchEvent(endShapeContactEvent);
             }
-            endShapeContactEvent.bodyA = endShapeContactEvent.bodyB = endShapeContactEvent.shapeA = endShapeContactEvent.shapeB = null;
         }
 
     };
