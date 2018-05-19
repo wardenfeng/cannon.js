@@ -538,7 +538,8 @@ World.prototype.step = function(dt, timeSinceLastCalled, maxSubSteps){
         }
 
         var t = (this.accumulator % dt) / dt;
-        for(var j=0; j !== this.bodies.length; j++){
+        var blen = this.bodies.length;
+        for(var j=0; j !== blen; j++){
             var b = this.bodies[j];
             b.previousPosition.lerp(b.position, t, b.interpolatedPosition);
             b.previousQuaternion.slerp(b.quaternion, t, b.interpolatedQuaternion);
@@ -959,7 +960,10 @@ World.prototype.emitContactEvents = (function(){
             for (var i = 0, l = additions.length; i < l; i += 2) {
                 beginContactEvent.bodyA = this.getBodyById(additions[i]);
                 beginContactEvent.bodyB = this.getBodyById(additions[i+1]);
-                this.dispatchEvent(beginContactEvent);
+                if(beginContactEvent.bodyA && beginContactEvent.bodyB) {
+                    this.dispatchEvent(beginContactEvent);
+                }
+                beginContactEvent.bodyA = beginContactEvent.bodyB = undefined;
             }
         }
 
@@ -967,7 +971,10 @@ World.prototype.emitContactEvents = (function(){
             for (var i = 0, l = removals.length; i < l; i += 2) {
                 endContactEvent.bodyA = this.getBodyById(removals[i]);
                 endContactEvent.bodyB = this.getBodyById(removals[i+1]);
-                this.dispatchEvent(endContactEvent);
+                if(endContactEvent.bodyA && endContactEvent.bodyB) {
+                    this.dispatchEvent(endContactEvent);
+                }
+                endContactEvent.bodyA = endContactEvent.bodyB = undefined;
             }
         }
 
@@ -989,6 +996,8 @@ World.prototype.emitContactEvents = (function(){
                 beginShapeContactEvent.bodyA = shapeA.body;
                 beginShapeContactEvent.bodyB = shapeB.body;
                 this.dispatchEvent(beginShapeContactEvent);
+                beginShapeContactEvent.shapeA = beginShapeContactEvent.shapeB = undefined;
+                beginShapeContactEvent.bodyA = beginShapeContactEvent.bodyB = undefined;
             }
         }
 
@@ -1001,6 +1010,8 @@ World.prototype.emitContactEvents = (function(){
                 endShapeContactEvent.bodyA = shapeA.body;
                 endShapeContactEvent.bodyB = shapeB.body;
                 this.dispatchEvent(endShapeContactEvent);
+                endShapeContactEvent.shapeA = endShapeContactEvent.shapeB = undefined;
+                endShapeContactEvent.bodyA = endShapeContactEvent.bodyB = undefined;
             }
         }
 
