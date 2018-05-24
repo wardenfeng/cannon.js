@@ -45,7 +45,7 @@ function Body(options){
     options = options || {};
 
     EventTarget.apply(this);
-
+    this.goid = '';
     this.id = Body.idCounter++;
 
     /**
