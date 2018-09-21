@@ -1,7 +1,0 @@
-src/demo
-dist
-examples
-demos
-libs
-node_modules
-Gruntfile.js

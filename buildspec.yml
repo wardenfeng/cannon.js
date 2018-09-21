@@ -1,0 +1,38 @@
+version: 0.2
+
+env:
+  variables:
+    CHROME_BIN: "/usr/bin/chromium-browser"
+
+phases:
+  install:
+    commands:
+      - echo Entered the install phase...
+      - apt-get update -y
+      - apt-get install make
+      # Setup for Chrome
+      - apt-get install -y software-properties-common
+      - add-apt-repository -y ppa:canonical-chromium-builds/stage
+      # Do it!
+      - apt-get update -y
+      - apt-get install -y chromium-browser 
+      - apt-get install -y gzip
+  pre_build:
+    commands:
+      - echo Entered the pre_build phase...
+      - npm install
+  build:
+    commands:
+      - echo Entered the build phase...
+      - make test
+      - make build
+  post_build:
+    commands:
+      - echo Entered the post_build phase...
+      - ./publish.sh
+      - echo Build completed on `date`
+artifacts:
+  files:
+    - '**/*'
+  discard-paths: no
+  base-directory: dist

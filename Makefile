@@ -7,7 +7,7 @@ publish:
 	./publish.sh
 
 clean:
-	rm -rf dist
+	rm -rf lib
 
 test:
 	npm run lint
