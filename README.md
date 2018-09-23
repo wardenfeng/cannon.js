@@ -1,5 +1,7 @@
 # 大炮 (Dàpào)
 
+![Build Status](https://codebuild.us-west-2.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiVmcwUTAvM24vTWhrZ1NTUDJXL1Y2bWdVOHZtaDQ0ZUt2ZDNBaGp2QVdCUVVJM3BPS0ZDRk1IRVo3RGdvS0lkak1iSGRtZDl5dUJ1R1lxVUV3QTFmOTBnPSIsIml2UGFyYW1ldGVyU3BlYyI6IjJEakF3UDlsbXBMa0ZnRmkiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
+
 ## Lightweight 3D Physics for the Web and Beyond
 
 Dapao is a Typescript port of the excellent [cannon.js](https://github.com/schteppe/cannon.js) library.
