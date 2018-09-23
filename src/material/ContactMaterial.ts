@@ -27,7 +27,7 @@ export class ContactMaterial {
   frictionEquationStiffness: number;
   frictionEquationRelaxation: number;
 
-  constructor(m1: Material, m2: Material, options: any) {
+  constructor(m1?: Material, m2?: Material, options?: any) {
 
     options = Utils.defaults(options, {
       friction: 0.3,

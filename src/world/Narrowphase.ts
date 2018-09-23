@@ -438,8 +438,8 @@ export class Narrowphase {
     xi: Vec3, xj: Vec3,
     qi: Quaternion, qj: Quaternion,
     bi: Body, bj: Body,
-    rsi: Shape, rsj: Shape,
-    justTest: boolean): boolean {
+    rsi?: Shape, rsj?: Shape,
+    justTest?: boolean): boolean {
 
     const ssi = (<Sphere>si);
     const ssj = (<Sphere>sj);

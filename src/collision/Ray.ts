@@ -279,6 +279,9 @@ export class Ray {
       case Shape.types.SPHERE:
         this.intersectSphere(<Sphere>shape, quat, position, body, shape);
       break;
+      case Shape.types.PLANE:
+        this.intersectPlane(<Plane>shape, quat, position, body, shape);
+      break;
     }
     // var intersectMethod = this[shape.type];
     // if (intersectMethod) {

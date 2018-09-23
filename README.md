@@ -16,7 +16,7 @@ If you want to use the library or to contribute, you can either reference this r
 
     ...
     "dependencies": {
-      "dapao": "git@github.com:TheRohans/dapao.git#master",
+      "dapao": "https://github.com/TheRohans/dapao.git#master",
       "document-register-element": "^1.7.0"
       ...
     },
