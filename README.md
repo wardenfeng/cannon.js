@@ -34,7 +34,7 @@ Or clone the repo and reference it from the local file system:
 
 For deeper examples, I recommend you checkout the cannon.js project ([cannon.js](https://github.com/schteppe/cannon.js)), but here is a very basic example:
 
-The sample code below creates a sphere on a plane, steps the simulation, and prints the sphere simulation to the console. Note that Cannon.js uses [SI units](http://en.wikipedia.org/wiki/International_System_of_Units) (metre, kilogram, second, etc.).
+The sample code below creates a sphere on a plane, steps the simulation, and prints the sphere simulation to the console. Note that DaPao (and Cannon.js) uses [SI units](http://en.wikipedia.org/wiki/International_System_of_Units) (metre, kilogram, second, etc.).
 
 ```typescript
 import * as DaPao from 'dapao';
@@ -83,7 +83,6 @@ var lastTime;
 * Contacts, friction and restitution
 * Collision filters
 * Body sleeping
-* Experimental SPH / fluid support
 * Various shapes and collision algorithms (see table below)
 
 |             | Sphere | Plane | Box | Convex | Particle | Heightfield | Trimesh |
