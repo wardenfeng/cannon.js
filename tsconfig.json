@@ -1,28 +1,28 @@
 {
   "compilerOptions": {
-      "outDir": "./types",
-      "baseUrl": "src",
-      "allowJs": false,
-      "removeComments": true,
-      "target": "es5",
-      "noImplicitReturns": true,
-      "moduleResolution": "node",
-      "emitDecoratorMetadata": true,
-      "experimentalDecorators": true,
-      "noImplicitThis": true,
-      "noFallthroughCasesInSwitch": true,
-      "allowUnreachableCode": false,
-      "allowUnusedLabels": false,
-      "noEmitOnError": true,
-      "noImplicitAny": true,
-      "module": "es2015",
-      "declaration": true,
+    "outDir": "./types",
+    "baseUrl": "src",
+    "allowJs": false,
+    "removeComments": true,
+    "noImplicitReturns": true,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "noImplicitThis": true,
+    "noFallthroughCasesInSwitch": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "noEmitOnError": true,
+    "noImplicitAny": true,
+    "module": "es2015",
+    "target": "es5",
+    "declaration": true,
+    "lib": [
+      "webworker",
+      "es2016",
+    ],
   },
-  "lib": [
-    "webworker",
-    "es2016",
-  ],
   "include": [
-      "./src/**/*"
+    "./src/**/*"
   ]
 }

@@ -1,6 +1,6 @@
 {
   "name": "dapao",
-  "version": "0.1.0",
+  "version": "0.1.1-beta",
   "description": "A lightweight 3D physics engine written in Typescript (Port of Cannon.js written in Javascript)",
   "homepage": "https://github.com/TheRohans/DaPao",
   "author": "Stefan Hedman <schteppe@gmail.com> (http://steffe.se)",
