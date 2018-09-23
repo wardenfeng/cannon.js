@@ -36,16 +36,10 @@
     "url": "https://github.com/TheRohans/dapao/issues"
   },
   "devDependencies": {
-    "ts-loader": "^2.3.4",
-    "tslint": "^5.0.0",
-    "eslint": "^4.16.0",
-    "typescript": "^2.5.3",
-    "webpack": "^3.5.5",
-    "nodeunit": "^0.9.0",
+    "@types/jasmine": "^2.6.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
-    "strip-loader": "^0.1.2",
-    "@types/jasmine": "^2.6.0",
+    "eslint": "^4.16.0",
     "jasmine-core": "^2.8.0",
     "jasmine-spec-reporter": "^3.2.0",
     "karma": "^2.0.5",
@@ -56,7 +50,14 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "karma-remap-istanbul": "^0.6.0",
     "karma-spec-reporter": "^0.0.31",
-    "karma-webpack": "^2.0.4"
+    "karma-webpack": "^2.0.4",
+    "nodeunit": "^0.9.0",
+    "strip-loader": "^0.1.2",
+    "ts-loader": "^4.1.0",
+    "tslint": "^5.0.0",
+    "typescript": "^2.5.3",
+    "webpack": "^4.19.1",
+    "webpack-cli": "^3.1.0"
   },
   "dependencies": {}
 }

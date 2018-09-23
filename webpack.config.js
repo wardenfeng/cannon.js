@@ -6,6 +6,8 @@ const webpack = require('webpack'),
   UglifyJSPlugin = require('uglifyjs-webpack-plugin');
   
 const config = {
+  mode: 'production',
+  devtool: false,
   entry: {
     dapao: './src/main.ts',
   },
@@ -18,10 +20,11 @@ const config = {
     filename: '[name].js',
     chunkFilename: '[id].js',
     libraryTarget: 'umd',
+    globalObject: 'this',
   },
   plugins: [],
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.ts?$/,
         loader: "ts-loader",
@@ -35,7 +38,7 @@ const config = {
 };
 
 if (!DEBUG) {
-  config.module.loaders.push(
+  config.module.rules.push(
     {
       test: /\.ts$/,
       loader: WebpackStrip.loader(
@@ -49,9 +52,9 @@ if (!DEBUG) {
 
   config.plugins.push(
     new UglifyJSPlugin({
-      mangle: {
-        except: ['$super', '$', 'exports', 'require']
-      }
+      // mangle: {
+      //   except: ['$super', '$', 'exports', 'require']
+      // }
     })
   );
 }
