@@ -5,7 +5,7 @@ export declare class Broadphase {
     world: World;
     useBoundingBoxes: boolean;
     dirty: boolean;
-    constructor();
+    constructor(world?: World);
     collisionPairs(world: World, p1: Body[], p2: Body[]): void;
     needBroadphaseCollision(bodyA: Body, bodyB: Body): boolean;
     intersectionTest(bodyA: Body, bodyB: Body, pairs1: any[], pairs2: any[]): void;

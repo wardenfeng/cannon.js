@@ -22,6 +22,7 @@ export * from './shapes/Plane';
 export * from './math/Quaternion';
 export * from './collision/Ray';
 export * from './collision/RaycastResult';
+export * from './collision/SAPBroadphase';
 export * from './shapes/Shape';
 export * from './solver/Solver';
 export * from './shapes/Sphere';

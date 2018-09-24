@@ -15,7 +15,7 @@ export class Broadphase {
   useBoundingBoxes: boolean;
   dirty: boolean;
 
-  constructor() {
+  constructor(world?: World) {
     /**
     * The world to search for collisions in.
     * @property world

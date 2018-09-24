@@ -36,7 +36,7 @@ export * from './collision/RaycastResult';
 //     RigidVehicle :                  require('./objects/RigidVehicle'),
 //     RotationalEquation :            require('./equations/RotationalEquation'),
 //     RotationalMotorEquation :       require('./equations/RotationalMotorEquation'),
-//     SAPBroadphase :                 require('./collision/SAPBroadphase'),
+export * from './collision/SAPBroadphase';
 //     SPHSystem :                     require('./objects/SPHSystem'),
 export * from './shapes/Shape';
 export * from './solver/Solver';
