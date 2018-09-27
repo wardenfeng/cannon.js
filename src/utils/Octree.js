@@ -3,8 +3,6 @@ var Vec3 = require('../math/Vec3');
 
 module.exports = Octree;
 
-
-
 /**
  * @class OctreeNode
  * @param {object} [options]
