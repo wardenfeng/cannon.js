@@ -21,9 +21,9 @@ export declare class Quaternion {
     conjugate(target?: Quaternion): Quaternion;
     normalize(): Quaternion;
     normalizeFast(): Quaternion;
-    vmult(v: Vec3, target: Vec3): Vec3;
+    vmult(v: Vec3, target?: Vec3): Vec3;
     copy(source: Quaternion): Quaternion;
-    toEuler(target: Vec3, order: string): void;
+    toEuler(target: Vec3, order?: string): void;
     setFromEuler(x: number, y: number, z: number, order?: string): this;
     clone(): Quaternion;
     slerp(toQuat: Quaternion, t: number, target: Quaternion): Quaternion;
