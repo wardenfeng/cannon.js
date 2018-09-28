@@ -264,7 +264,7 @@ export class Quaternion {
    * @param {Vec3} target Optional
    * @return {Vec3}
    */
-  vmult(v: Vec3, target: Vec3): Vec3 {
+  vmult(v: Vec3, target?: Vec3): Vec3 {
     target = target || new Vec3();
 
     const x = v.x,
@@ -310,9 +310,7 @@ export class Quaternion {
    * @param {Vec3} target
    * @param string order Three-character string e.g. 'YZX', which also is default.
    */
-  toEuler(target: Vec3, order: string) {
-    order = order || 'YZX';
-
+  toEuler(target: Vec3, order: string = 'YZX') {
     let heading, attitude, bank;
     const x = this.x,
       y = this.y,

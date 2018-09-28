@@ -92,7 +92,7 @@ export class Mat3 {
    * @param {Vec3} v The vector to multiply with
    * @param {Vec3} target Optional, target to save the result in.
    */
-  vmult(v: Vec3, target: Vec3) {
+  vmult(v: Vec3, target?: Vec3): Vec3 {
     target = target || new Vec3();
 
     const e = this.elements,
@@ -123,7 +123,7 @@ export class Mat3 {
    * @param {Mat3} m Matrix to multiply with from left side.
    * @return {Mat3} The result.
    */
-  mmult(m: Mat3, target: Mat3) {
+  mmult(m: Mat3, target?: Mat3): Mat3 {
     const r = target || new Mat3();
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
@@ -143,7 +143,7 @@ export class Mat3 {
    * @param {Vec3} v
    * @return {Mat3} The result.
    */
-  scale(v: Vec3, target: Mat3) {
+  scale(v: Vec3, target?: Mat3): Mat3 {
     target = target || new Mat3();
     const e = this.elements,
       t = target.elements;
@@ -163,7 +163,7 @@ export class Mat3 {
    * @return {Vec3} The solution x
    * @todo should reuse arrays
    */
-  solve(b: Vec3, target: Vec3) {
+  solve(b: Vec3, target?: Vec3): Vec3 {
     target = target || new Vec3();
 
     // Construct equations
@@ -237,7 +237,7 @@ export class Mat3 {
    * @param {Number} value Optional. If provided, the matrix element will be set to this value.
    * @return {Number}
    */
-  e(row: number, column: number, value: number) {
+  e(row: number, column: number, value?: number): number {
     if (value === undefined) {
       return this.elements[column + 3 * row];
     } else {
@@ -279,7 +279,7 @@ export class Mat3 {
    * @param {Mat3} target Optional. Target matrix to save in.
    * @return {Mat3} The solution x
    */
-  reverse(target: Mat3): Mat3 {
+  reverse(target?: Mat3): Mat3 {
 
     target = target || new Mat3();
 
@@ -415,7 +415,7 @@ export class Mat3 {
    * @param  {Mat3} target Where to store the result.
    * @return {Mat3} The target Mat3, or a new Mat3 if target was omitted.
    */
-  transpose(target: Mat3): Mat3 {
+  transpose(target?: Mat3): Mat3 {
     target = target || new Mat3();
 
     const Mt = target.elements,
