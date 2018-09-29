@@ -1,16 +1,13 @@
 // Export classes
 
-// Not ported
-//     ConeTwistConstraint :           require('./constraints/ConeTwistConstraint'),
-//     Heightfield :                   require('./shapes/Heightfield'),
-//     HingeConstraint :               require('./constraints/HingeConstraint'),
-//     ObjectCollisionMatrix :         require('./collision/ObjectCollisionMatrix'),
-//     RaycastVehicle :                require('./objects/RaycastVehicle'),
-//     RigidVehicle :                  require('./objects/RigidVehicle'),
-//     RotationalEquation :            require('./equations/RotationalEquation'),
-//     RotationalMotorEquation :       require('./equations/RotationalMotorEquation'),
-//     SPHSystem :                     require('./objects/SPHSystem'),
-//     Trimesh :                       require('./shapes/Trimesh'),
+// Not ported (yet)
+// ConeTwistConstraint :           require('./constraints/ConeTwistConstraint'),
+// Heightfield :                   require('./shapes/Heightfield'),
+// ObjectCollisionMatrix :         require('./collision/ObjectCollisionMatrix'),
+// RaycastVehicle :                require('./objects/RaycastVehicle'),
+// RigidVehicle :                  require('./objects/RigidVehicle'),
+// SPHSystem :                     require('./objects/SPHSystem'),
+// Trimesh :                       require('./shapes/Trimesh'),
 
 export * from './collision/AABB';
 export * from './collision/ArrayCollisionMatrix';
@@ -24,9 +21,12 @@ export * from './constraints/Constraint';
 export * from './constraints/DistanceConstraint';
 export * from './constraints/LockConstraint';
 export * from './constraints/PointToPointConstraint';
+export * from './constraints/HingeConstraint';
 export * from './equations/ContactEquation';
 export * from './equations/Equation';
 export * from './equations/FrictionEquation';
+export * from './equations/RotationalEquation';
+export * from './equations/RotationalMotorEquation';
 export * from './material/ContactMaterial';
 export * from './material/Material';
 export * from './math/Quaternion';

@@ -8,6 +8,6 @@ export declare class PointToPointConstraint extends Constraint {
     equationZ: ContactEquation;
     pivotA: Vec3;
     pivotB: Vec3;
-    constructor(bodyA: Body, pivotA: Vec3, bodyB: Body, pivotB: Vec3, maxForce: number);
+    constructor(bodyA: Body, pivotA: Vec3, bodyB: Body, pivotB: Vec3, maxForce?: number);
     update(): void;
 }

@@ -39,10 +39,8 @@ export class PointToPointConstraint extends Constraint {
   pivotA: Vec3;
   pivotB: Vec3;
 
-  constructor(bodyA: Body, pivotA: Vec3, bodyB: Body, pivotB: Vec3, maxForce: number) {
+  constructor(bodyA: Body, pivotA: Vec3, bodyB: Body, pivotB: Vec3, maxForce = 1e6) {
     super(bodyA, bodyB);
-
-    maxForce = typeof (maxForce) !== 'undefined' ? maxForce : 1e6;
 
     /**
      * Pivot, defined locally in bodyA.

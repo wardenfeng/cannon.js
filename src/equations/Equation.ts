@@ -39,12 +39,12 @@ export class Equation {
     /**
      * @property {number} minForce
      */
-    this.minForce = typeof (minForce) === 'undefined' ? -1e6 : minForce;
+    this.minForce = minForce || -1e6;
 
     /**
      * @property {number} maxForce
      */
-    this.maxForce = typeof (maxForce) === 'undefined' ? 1e6 : maxForce;
+    this.maxForce = maxForce || 1e6;
 
     /**
      * @property bi
