@@ -117,9 +117,29 @@ export class Body extends EventTarget {
   id: number;
   // This is used by World for some reason...
   index: number;
+  /**
+   * Reference to the world the body is living in
+   * @property world
+   * @type {World}
+   */
   world: World;
 
+  /**
+   * Callback function that is used BEFORE stepping the system.
+   * Use it to apply forces, for example. Inside the function,
+   * "this" will refer to this Body object.
+   * @property preStep
+   * @type {Function}
+   * @deprecated Use World events instead
+   */
   preStep: Function;
+  /**
+   * Callback function that is used AFTER stepping the system. Inside
+   * the function, "this" will refer to this Body object.
+   * @property postStep
+   * @type {Function}
+   * @deprecated Use World events instead
+   */
   postStep: Function;
 
   vlambda: Vec3;
@@ -127,13 +147,28 @@ export class Body extends EventTarget {
   collisionFilterGroup: number;
   collisionFilterMask: number;
 
+  /**
+   * Whether to produce contact forces when in contact with other
+   * bodies. Note that contacts will be generated, but they will be disabled.
+   * @property {Number} collisionResponse
+   */
   collisionResponse: boolean;
 
+  /**
+   * World space position of the body.
+   * @property position
+   * @type {Vec3}
+   */
   position: Vec3;
 
   previousPosition: Vec3;
   interpolatedPosition: Vec3;
   initPosition: Vec3;
+  /**
+   * World space velocity of the body.
+   * @property velocity
+   * @type {Vec3}
+   */
   velocity: Vec3;
   initVelocity: Vec3;
   force: Vec3;
@@ -164,7 +199,14 @@ export class Body extends EventTarget {
   previousQuaternion: Quaternion;
   interpolatedQuaternion: Quaternion;
 
-
+  /**
+   * Angular velocity of the body, in world space. Think of the
+   * angular velocity as a vector, which the body rotates around.
+   * The length of this vector determines how fast (in radians per
+   * second) the body rotates.
+   * @property angularVelocity
+   * @type {Vec3}
+   */
   angularVelocity: Vec3;
   initAngularVelocity: Vec3;
 
@@ -182,11 +224,28 @@ export class Body extends EventTarget {
   invInertiaSolve: Vec3;
   invInertiaWorldSolve: Mat3;
 
+  /**
+   * Set to true if you don't want the body to rotate. Make sure to run
+   * .updateMassProperties() after changing this.
+   * @property {Boolean} fixedRotation
+   * @default false
+   */
   fixedRotation: boolean;
 
   angularDamping: number;
 
+  /**
+   * Use this property to limit the motion along any world axis.
+   * (1,1,1) will allow motion along all axes while (0,0,0) allows none.
+   * @property {Vec3} linearFactor
+   */
   linearFactor: Vec3;
+
+  /**
+   * Use this property to limit the rotational motion along any
+   * world axis. (1,1,1) will allow rotation along all axes while (0,0,0) allows none.
+   * @property {Vec3} angularFactor
+   */
   angularFactor: Vec3;
 
   aabb: AABB;
@@ -203,30 +262,8 @@ export class Body extends EventTarget {
     this.goid = '';
     this.id = Body.idCounter++;
 
-    /**
-     * Reference to the world the body is living in
-     * @property world
-     * @type {World}
-     */
     this.world = null;
-
-    /**
-     * Callback function that is used BEFORE stepping the system.
-     * Use it to apply forces, for example. Inside the function,
-     * "this" will refer to this Body object.
-     * @property preStep
-     * @type {Function}
-     * @deprecated Use World events instead
-     */
     this.preStep = null;
-
-    /**
-     * Callback function that is used AFTER stepping the system. Inside
-     * the function, "this" will refer to this Body object.
-     * @property postStep
-     * @type {Function}
-     * @deprecated Use World events instead
-     */
     this.postStep = null;
 
     this.vlambda = new Vec3();
@@ -241,18 +278,8 @@ export class Body extends EventTarget {
      */
     this.collisionFilterMask = typeof (options.collisionFilterMask) === 'number' ? options.collisionFilterMask : -1;
 
-    /**
-     * Whether to produce contact forces when in contact with other
-     * bodies. Note that contacts will be generated, but they will be disabled.
-     * @property {Number} collisionResponse
-     */
     this.collisionResponse = true;
 
-    /**
-     * World space position of the body.
-     * @property position
-     * @type {Vec3}
-     */
     this.position = new Vec3();
 
     /**
@@ -280,11 +307,6 @@ export class Body extends EventTarget {
       this.initPosition.copy(options.position);
     }
 
-    /**
-     * World space velocity of the body.
-     * @property velocity
-     * @type {Vec3}
-     */
     this.velocity = new Vec3();
 
     if (options.velocity) {
@@ -413,14 +435,6 @@ export class Body extends EventTarget {
       this.interpolatedQuaternion.copy(options.quaternion);
     }
 
-    /**
-     * Angular velocity of the body, in world space. Think of the
-     * angular velocity as a vector, which the body rotates around.
-     * The length of this vector determines how fast (in radians per
-     * second) the body rotates.
-     * @property angularVelocity
-     * @type {Vec3}
-     */
     this.angularVelocity = new Vec3();
 
     if (options.angularVelocity) {
@@ -481,11 +495,6 @@ export class Body extends EventTarget {
      */
     this.invInertiaWorldSolve = new Mat3();
 
-    /**
-     * Set to true if you don't want the body to rotate. Make sure to run .updateMassProperties() after changing this.
-     * @property {Boolean} fixedRotation
-     * @default false
-     */
     this.fixedRotation = typeof (options.fixedRotation) !== 'undefined' ? options.fixedRotation : false;
 
     /**
@@ -493,21 +502,12 @@ export class Body extends EventTarget {
      */
     this.angularDamping = typeof (options.angularDamping) !== 'undefined' ? options.angularDamping : 0.01;
 
-    /**
-     * Use this property to limit the motion along any world axis.
-     * (1,1,1) will allow motion along all axes while (0,0,0) allows none.
-     * @property {Vec3} linearFactor
-     */
+
     this.linearFactor = new Vec3(1, 1, 1);
     if (options.linearFactor) {
       this.linearFactor.copy(options.linearFactor);
     }
 
-    /**
-     * Use this property to limit the rotational motion along any
-     * world axis. (1,1,1) will allow rotation along all axes while (0,0,0) allows none.
-     * @property {Vec3} angularFactor
-     */
     this.angularFactor = new Vec3(1, 1, 1);
     if (options.angularFactor) {
       this.angularFactor.copy(options.angularFactor);
