@@ -609,9 +609,9 @@ export class World extends EventTarget {
    */
   step(dt: number, timeSinceLastCalled?: number, maxSubSteps?: number) {
     maxSubSteps = maxSubSteps || 10;
-    timeSinceLastCalled = timeSinceLastCalled || 0;
+    timeSinceLastCalled = timeSinceLastCalled || -1;
 
-    if (timeSinceLastCalled === 0) { // Fixed, simple stepping
+    if (timeSinceLastCalled === -1) { // Fixed, simple stepping
 
       this.internalStep(dt);
 
@@ -629,7 +629,9 @@ export class World extends EventTarget {
         substeps++;
       }
 
-      const t = (this.accumulator % dt) / dt;
+      // Get rid of excess simulation time
+      this.accumulator %= dt;
+      const t = this.accumulator / dt;
       const blen = this.bodies.length;
       for (let j = 0; j !== blen; j++) {
         const b = this.bodies[j];
