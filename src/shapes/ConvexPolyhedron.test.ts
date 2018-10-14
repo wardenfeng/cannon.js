@@ -188,5 +188,37 @@ describe('ConvexPolyhedron', () => {
       expect(Math.abs(result[0] - 1.5) < 0.01).toBeTruthy();
       expect(Math.abs(result[1] - 0.5) < 0.01).toBeTruthy();
   });
+
+  it('should calculateWorldAABB always decreasing verts NoUndefined', () => {
+    const vertices = [
+        new Vec3( 4, 4, 4),
+        new Vec3( 3, 3, 3),
+        new Vec3( 2, 2, 2),
+        new Vec3( 1, 1, 1),
+        new Vec3( 0, 0, 0),
+        new Vec3(-1, -1, -1),
+        new Vec3(-2, -2, -2),
+        new Vec3(-3, -3, -3)
+    ];
+
+    const indices = [
+        [3, 2, 1, 0],
+        [4, 5, 6, 7],
+        [5, 4, 0, 1],
+        [2, 3, 7, 6],
+        [0, 4, 7, 3],
+        [1, 2, 6, 5],
+    ];
+    const poly = new ConvexPolyhedron(vertices, indices);
+    const min = new Vec3();
+    const max = new Vec3();
+    poly.calculateWorldAABB(new Vec3(0, 0, 0), new Quaternion(0, 0, 0, 1), min, max);
+    expect(min.x).not.toBeUndefined();
+    expect(max.x).not.toBeUndefined();
+    expect(min.y).not.toBeUndefined();
+    expect(max.y).not.toBeUndefined();
+    expect(min.z).not.toBeUndefined();
+    expect(max.z).not.toBeUndefined();
+  });
 });
 

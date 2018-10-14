@@ -214,7 +214,7 @@ export class ConvexPolyhedron extends Shape {
    */
   clipAgainstHull(posA: Vec3, quatA: Quaternion, hullB: ConvexPolyhedron, posB: Vec3,
     quatB: Quaternion, separatingNormal: Vec3, minDist: number, maxDist: number, result: HullResult[]) {
-      const cah_WorldNormal = new Vec3();
+    const cah_WorldNormal = new Vec3();
 
     const WorldNormal = cah_WorldNormal;
     const hullA = this;
@@ -266,7 +266,7 @@ export class ConvexPolyhedron extends Shape {
    * @return {bool} Returns false if a separation is found, else true
    */
   findSeparatingAxis(hullB: ConvexPolyhedron, posA: Vec3, quatA: Quaternion, posB: Vec3,
-     quatB: Quaternion, target: Vec3, faceListA?: any[], faceListB?: any[]): boolean {
+    quatB: Quaternion, target: Vec3, faceListA?: any[], faceListB?: any[]): boolean {
     const fsa_faceANormalWS3 = new Vec3(),
       fsa_Worldnormal1 = new Vec3(),
       fsa_deltaC = new Vec3(),
@@ -781,141 +781,148 @@ export class ConvexPolyhedron extends Shape {
       tempWorldVertex.copy(verts[i]);
       quat.vmult(tempWorldVertex, tempWorldVertex);
       pos.vadd(tempWorldVertex, tempWorldVertex);
+
       const v = tempWorldVertex;
       if (v.x < minx || minx === undefined) {
         minx = v.x;
-      } else if (v.x > maxx || maxx === undefined) {
+      }
+
+      if (v.x > maxx || maxx === undefined) {
         maxx = v.x;
       }
 
       if (v.y < miny || miny === undefined) {
         miny = v.y;
-      } else if (v.y > maxy || maxy === undefined) {
+      }
+
+      if (v.y > maxy || maxy === undefined) {
         maxy = v.y;
       }
 
       if (v.z < minz || minz === undefined) {
         minz = v.z;
-      } else if (v.z > maxz || maxz === undefined) {
+      }
+
+      if (v.z > maxz || maxz === undefined) {
         maxz = v.z;
       }
-    }
-    min.set(minx, miny, minz);
-    max.set(maxx, maxy, maxz);
   }
+  min.set(minx, miny, minz);
+  max.set(maxx, maxy, maxz);
+}
 
-  /**
-   * Get approximate convex volume
-   * @method volume
-   * @return {Number}
-   */
-  volume(): number {
-    return 4.0 * Math.PI * this.boundingSphereRadius / 3.0;
+/**
+ * Get approximate convex volume
+ * @method volume
+ * @return {Number}
+ */
+volume(): number {
+  return 4.0 * Math.PI * this.boundingSphereRadius / 3.0;
+}
+
+/**
+ * Get an average of all the vertices positions
+ * @method getAveragePointLocal
+ * @param  {Vec3} target
+ * @return {Vec3}
+ */
+getAveragePointLocal(target: Vec3): Vec3 {
+  target = target || new Vec3();
+  const n = this.vertices.length,
+    verts = this.vertices;
+  for (let i = 0; i < n; i++) {
+    target.vadd(verts[i], target);
   }
+  target.mult(1 / n, target);
+  return target;
+}
 
-  /**
-   * Get an average of all the vertices positions
-   * @method getAveragePointLocal
-   * @param  {Vec3} target
-   * @return {Vec3}
-   */
-  getAveragePointLocal(target: Vec3): Vec3 {
-    target = target || new Vec3();
-    const n = this.vertices.length,
-      verts = this.vertices;
+/**
+ * Transform all local points. Will change the .vertices
+ * @method transformAllPoints
+ * @param  {Vec3} offset
+ * @param  {Quaternion} quat
+ */
+transformAllPoints(offset: Vec3, quat: Quaternion) {
+  const n = this.vertices.length,
+    verts = this.vertices;
+
+  // Apply rotation
+  if (quat) {
+    // Rotate vertices
     for (let i = 0; i < n; i++) {
-      target.vadd(verts[i], target);
+      const v = verts[i];
+      quat.vmult(v, v);
     }
-    target.mult(1 / n, target);
-    return target;
+    // Rotate face normals
+    for (let i = 0; i < this.faceNormals.length; i++) {
+      const v = this.faceNormals[i];
+      quat.vmult(v, v);
+    }
+    /*
+    // Rotate edges
+    for(let i=0; i<this.uniqueEdges.length; i++){
+        let v = this.uniqueEdges[i];
+        quat.vmult(v,v);
+    }*/
   }
 
-  /**
-   * Transform all local points. Will change the .vertices
-   * @method transformAllPoints
-   * @param  {Vec3} offset
-   * @param  {Quaternion} quat
-   */
-  transformAllPoints(offset: Vec3, quat: Quaternion) {
-    const n = this.vertices.length,
-      verts = this.vertices;
-
-    // Apply rotation
-    if (quat) {
-      // Rotate vertices
-      for (let i = 0; i < n; i++) {
-        const v = verts[i];
-        quat.vmult(v, v);
-      }
-      // Rotate face normals
-      for (let i = 0; i < this.faceNormals.length; i++) {
-        const v = this.faceNormals[i];
-        quat.vmult(v, v);
-      }
-      /*
-      // Rotate edges
-      for(let i=0; i<this.uniqueEdges.length; i++){
-          let v = this.uniqueEdges[i];
-          quat.vmult(v,v);
-      }*/
+  // Apply offset
+  if (offset) {
+    for (let i = 0; i < n; i++) {
+      const v = verts[i];
+      v.vadd(offset, v);
     }
+  }
+}
 
-    // Apply offset
-    if (offset) {
-      for (let i = 0; i < n; i++) {
-        const v = verts[i];
-        v.vadd(offset, v);
-      }
+/**
+ * Checks whether p is inside the polyhedra. Must be in local coords. The point lies
+ * outside of the convex hull of the other points if and only if the direction of
+ * all the vectors from it to those other points are on less than one half of a
+ * sphere around it.
+ * @method pointIsInside
+ * @param  {Vec3} p      A point given in local coordinates
+ * @return {Boolean}
+ */
+pointIsInside(p: Vec3): boolean | number {
+  const ConvexPolyhedron_pointIsInside = new Vec3();
+  const ConvexPolyhedron_vToP = new Vec3();
+  const ConvexPolyhedron_vToPointInside = new Vec3();
+
+  const verts = this.vertices;
+  const faces = this.faces;
+  const normals = this.faceNormals;
+
+  const positiveResult: any = null;
+  const N = this.faces.length;
+  const pointInside = ConvexPolyhedron_pointIsInside;
+  this.getAveragePointLocal(pointInside);
+
+  for (let i = 0; i < N; i++) {
+    const numVertices = this.faces[i].length;
+    const vec = normals[i];
+    const v = verts[faces[i][0]]; // We only need one point in the face
+
+    // This dot product determines which side of the edge the point is
+    const vToP = ConvexPolyhedron_vToP;
+    p.vsub(v, vToP);
+    const r1 = vec.dot(vToP);
+
+    const vToPointInside = ConvexPolyhedron_vToPointInside;
+    pointInside.vsub(v, vToPointInside);
+    const r2 = vec.dot(vToPointInside);
+
+    if ((r1 < 0 && r2 > 0) || (r1 > 0 && r2 < 0)) {
+      return false; // Encountered some other sign. Exit.
+    } else {
     }
   }
 
-  /**
-   * Checks whether p is inside the polyhedra. Must be in local coords. The point lies
-   * outside of the convex hull of the other points if and only if the direction of
-   * all the vectors from it to those other points are on less than one half of a
-   * sphere around it.
-   * @method pointIsInside
-   * @param  {Vec3} p      A point given in local coordinates
-   * @return {Boolean}
-   */
-  pointIsInside(p: Vec3): boolean | number {
-    const ConvexPolyhedron_pointIsInside = new Vec3();
-    const ConvexPolyhedron_vToP = new Vec3();
-    const ConvexPolyhedron_vToPointInside = new Vec3();
-
-    const verts = this.vertices;
-    const faces = this.faces;
-    const normals = this.faceNormals;
-
-    const positiveResult: any = null;
-    const N = this.faces.length;
-    const pointInside = ConvexPolyhedron_pointIsInside;
-    this.getAveragePointLocal(pointInside);
-
-    for (let i = 0; i < N; i++) {
-      const numVertices = this.faces[i].length;
-      const vec = normals[i];
-      const v = verts[faces[i][0]]; // We only need one point in the face
-
-      // This dot product determines which side of the edge the point is
-      const vToP = ConvexPolyhedron_vToP;
-      p.vsub(v, vToP);
-      const r1 = vec.dot(vToP);
-
-      const vToPointInside = ConvexPolyhedron_vToPointInside;
-      pointInside.vsub(v, vToPointInside);
-      const r2 = vec.dot(vToPointInside);
-
-      if ((r1 < 0 && r2 > 0) || (r1 > 0 && r2 < 0)) {
-        return false; // Encountered some other sign. Exit.
-      } else {
-      }
-    }
-
-    // If we got here, all dot products were of the same sign.
-    // TODO: fix the return here. ???
-    return positiveResult ? 1 : -1;
-  }
+  // If we got here, all dot products were of the same sign.
+  // TODO: fix the return here. ???
+  return positiveResult ? 1 : -1;
+}
 
   /**
    * Get max and min dot product of a convex hull at position (pos,quat) projected onto an axis. Results are saved in the array maxmin.
@@ -928,50 +935,50 @@ export class ConvexPolyhedron extends Shape {
    * @param {array} result result[0] and result[1] will be set to maximum and minimum, respectively.
    */
   static project(hull: ConvexPolyhedron, axis: Vec3, pos: Vec3, quat: Quaternion, result: number[]) {
-    const project_worldVertex = new Vec3();
-    const project_localAxis = new Vec3();
-    const project_localOrigin = new Vec3();
+  const project_worldVertex = new Vec3();
+  const project_localAxis = new Vec3();
+  const project_localOrigin = new Vec3();
 
-    const n = hull.vertices.length,
-      worldVertex = project_worldVertex,
-      localAxis = project_localAxis,
-      localOrigin = project_localOrigin,
-      vs = hull.vertices;
-    let max = 0,
-      min = 0;
+  const n = hull.vertices.length,
+    worldVertex = project_worldVertex,
+    localAxis = project_localAxis,
+    localOrigin = project_localOrigin,
+    vs = hull.vertices;
+  let max = 0,
+    min = 0;
 
-    localOrigin.setZero();
+  localOrigin.setZero();
 
-    // Transform the axis to local
-    Transform.vectorToLocalFrame(pos, quat, axis, localAxis);
-    Transform.pointToLocalFrame(pos, quat, localOrigin, localOrigin);
-    const add = localOrigin.dot(localAxis);
+  // Transform the axis to local
+  Transform.vectorToLocalFrame(pos, quat, axis, localAxis);
+  Transform.pointToLocalFrame(pos, quat, localOrigin, localOrigin);
+  const add = localOrigin.dot(localAxis);
 
-    min = max = vs[0].dot(localAxis);
+  min = max = vs[0].dot(localAxis);
 
-    for (let i = 1; i < n; i++) {
-      const val = vs[i].dot(localAxis);
+  for (let i = 1; i < n; i++) {
+    const val = vs[i].dot(localAxis);
 
-      if (val > max) {
-        max = val;
-      }
-
-      if (val < min) {
-        min = val;
-      }
+    if (val > max) {
+      max = val;
     }
 
-    min -= add;
-    max -= add;
-
-    if (min > max) {
-      // Inconsistent - swap
-      const temp = min;
-      min = max;
-      max = temp;
+    if (val < min) {
+      min = val;
     }
-    // Output
-    result[0] = max;
-    result[1] = min;
   }
+
+  min -= add;
+  max -= add;
+
+  if (min > max) {
+    // Inconsistent - swap
+    const temp = min;
+    min = max;
+    max = temp;
+  }
+  // Output
+  result[0] = max;
+  result[1] = min;
+}
 }
