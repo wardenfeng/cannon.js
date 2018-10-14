@@ -3,7 +3,7 @@ import { Material } from '../material/Material';
 import { Body } from '../objects/Body';
 import { Quaternion } from '../math/Quaternion';
 export declare class Shape {
-    static idCounter: 0;
+    static idCounter: number;
     static types: {
         SPHERE: number;
         PLANE: number;

@@ -16,7 +16,7 @@ import { Quaternion } from '../math/Quaternion';
  * @author schteppe
  */
 export class Shape {
-  static idCounter: 0;
+  static idCounter = 0;
   /**
    * The available shape types.
    * @static
