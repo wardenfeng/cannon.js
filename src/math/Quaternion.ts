@@ -151,9 +151,6 @@ export class Quaternion {
    * @param {Quaternion} target Optional.
    * @return {Quaternion}
    */
-  private Quaternion_mult_va = new Vec3();
-  private Quaternion_mult_vb = new Vec3();
-  private Quaternion_mult_vaxvb = new Vec3();
   mult(q: Quaternion, target: Quaternion): Quaternion {
     target = target || new Quaternion();
 
