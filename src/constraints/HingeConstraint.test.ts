@@ -10,11 +10,6 @@ describe('HingeConstraint', () => {
 
     expect(c.equations.length).toEqual(6); // 5 actually, and 1 for the motor
 
-    c.equations.forEach( e => {
-      console.error(e.maxForce);
-      console.error(e.minForce);
-    });
-
     expect(c.equations[0].maxForce).toEqual(123);  // equationX: ContactEquation;
     expect(c.equations[1].maxForce).toEqual(123);  // equationY: ContactEquation;
     expect(c.equations[2].maxForce).toEqual(123);  // equationZ: ContactEquation;
