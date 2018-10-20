@@ -13,23 +13,26 @@ export class Material {
   friction: number;
   restitution: number;
 
-  constructor(options: any) {
-    let name = '';
-    options = options || {};
+  constructor(options: any = {}) {
+    options = Object.assign({
+      name: '',
+      friction: -1,
+      restitution: -1
+    }, options);
 
     // Backwards compatibility fix
-    if (typeof (options) === 'string') {
-      name = options;
-      options = {};
-    } else if (typeof (options) === 'object') {
-      name = '';
-    }
+    // if (typeof (options) === 'string') {
+    //   name = options;
+    //   options = {};
+    // } else if (typeof (options) === 'object') {
+    //   name = '';
+    // }
 
     /**
      * @property name
      * @type {String}
      */
-    this.name = name;
+    this.name = options.name;
 
     /**
      * material id.
@@ -44,7 +47,7 @@ export class Material {
      * the value from .defaultContactMaterial in the World will be used.
      * @property {number} friction
      */
-    this.friction = typeof (options.friction) !== 'undefined' ? options.friction : -1;
+    this.friction = options.friction;
 
     /**
      * Restitution for this material. If non-negative, it will be used instead of
@@ -52,6 +55,6 @@ export class Material {
      * the value from .defaultContactMaterial in the World will be used.
      * @property {number} restitution
      */
-    this.restitution = typeof (options.restitution) !== 'undefined' ? options.restitution : -1;
+    this.restitution = options.restitution;
   }
 }

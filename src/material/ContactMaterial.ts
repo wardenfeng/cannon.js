@@ -22,21 +22,22 @@ export class ContactMaterial {
   materials: [Material, Material];
   friction: number;
   restitution: number;
+
   contactEquationStiffness: number;
   contactEquationRelaxation: number;
   frictionEquationStiffness: number;
   frictionEquationRelaxation: number;
 
-  constructor(m1?: Material, m2?: Material, options?: any) {
+  constructor(m1?: Material, m2?: Material, options: any = {}) {
 
-    options = Utils.defaults(options, {
+    options = Object.assign({
       friction: 0.3,
       restitution: 0.3,
       contactEquationStiffness: 1e7,
       contactEquationRelaxation: 3,
       frictionEquationStiffness: 1e7,
       frictionEquationRelaxation: 3
-    });
+    }, options);
 
     /**
      * Identifier of this material
