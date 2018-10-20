@@ -4,5 +4,5 @@ export declare class Material {
     id: number;
     friction: number;
     restitution: number;
-    constructor(options: any);
+    constructor(options?: any);
 }

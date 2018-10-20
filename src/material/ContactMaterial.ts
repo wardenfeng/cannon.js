@@ -1,5 +1,4 @@
 import { Material } from './Material';
-import { Utils } from '../utils/Utils';
 
 /**
  * Defines what happens when two materials meet.

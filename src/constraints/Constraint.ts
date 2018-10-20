@@ -1,4 +1,3 @@
-import { Utils } from '../utils/Utils';
 import { Body } from '../objects/Body';
 import { Equation } from '../equations/Equation';
 
@@ -25,11 +24,11 @@ export class Constraint {
 
   collideConnected: boolean;
 
-  constructor(bodyA: Body, bodyB: Body, options?: any) {
-    options = Utils.defaults(options, {
+  constructor(bodyA: Body, bodyB: Body, options: any = {}) {
+    options = Object.assign({
       collideConnected: true,
       wakeUpBodies: true,
-    });
+    }, options);
 
     /**
      * Equations to be solved in this constraint
