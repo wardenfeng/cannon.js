@@ -15,10 +15,10 @@ describe('Contact Material', () => {
     expect(cm.frictionEquationStiffness).toEqual(1e7);
     expect(cm.frictionEquationRelaxation).toEqual(3);
 
-    expect(cm.materials).not.toBeUndefined();
+    expect(cm.materials).toBeDefined();
 
-    expect(cm.materials[0]).not.toBeDefined();
-    expect(cm.materials[1]).not.toBeDefined();
+    expect(cm.materials[0]).toBeDefined();
+    expect(cm.materials[1]).toBeDefined();
   });
 
   it('should override defaults', () => {

@@ -5,9 +5,9 @@ describe('Material', () => {
   it('should construct default', () => {
     const cm = new Material();
     expect(cm).not.toBeUndefined();
-    expect(cm.friction).toEqual(-1);
-    expect(cm.restitution).toEqual(-1);
-    expect(cm.name).toEqual('');
+    expect(cm.friction).toEqual(.3);
+    expect(cm.restitution).toEqual(.3);
+    expect(cm.name).toEqual('default');
   });
 
   it('should take options', () => {
