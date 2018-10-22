@@ -103,5 +103,5 @@ export declare class World extends EventTarget {
     private World_step_postStepEvent;
     internalStep(dt: number): void;
     clearForces(): void;
-    emitContactEvents: () => () => void;
+    emitContactEvents: () => void;
 }

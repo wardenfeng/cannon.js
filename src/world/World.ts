@@ -1045,7 +1045,7 @@ export class World extends EventTarget {
       shapeB: null
     };
 
-    return () => {
+    return (() => {
       const hasBeginContact = this.hasAnyEventListener('beginContact');
       const hasEndContact = this.hasAnyEventListener('endContact');
 
@@ -1111,6 +1111,6 @@ export class World extends EventTarget {
           endShapeContactEvent.bodyA = endShapeContactEvent.bodyB = undefined;
         }
       }
-    };
+    })();
   }
 }
