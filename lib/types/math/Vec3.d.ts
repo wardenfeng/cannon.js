@@ -15,6 +15,7 @@ export declare class Vec3 {
     norm(): number;
     length(): number;
     norm2(): number;
+    lengthSquared(): number;
     distanceTo(p: Vec3): number;
     distanceSquared(p: Vec3): number;
     mult(scalar: number, target?: Vec3): Vec3;
