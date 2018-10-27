@@ -324,4 +324,15 @@ export class AABB {
 
     return true;
   }
+
+  /**
+   * The distances from the center of the object to the extremes
+   */
+  public halfExtents(): Vec3 {
+    if (!this.upperBound || !this.lowerBound) {
+      return new Vec3();
+    }
+
+    return this.upperBound.vsub(this.lowerBound).mult(.5);
+  }
 }

@@ -95,6 +95,7 @@ export declare class Body extends EventTarget {
     private tmpVec;
     private tmpQuat;
     addShape(shape: Shape, offset?: Vec3, orientation?: Quaternion): this;
+    recalculateShapes(): void;
     updateBoundingRadius(): void;
     private computeAABB_shapeAABB;
     computeAABB(): void;

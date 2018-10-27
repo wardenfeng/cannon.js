@@ -19,4 +19,5 @@ export declare class AABB {
     toLocalFrame(frame: Transform, target: AABB): AABB;
     toWorldFrame(frame: Transform, target: AABB): AABB;
     overlapsRay(ray: Ray): boolean;
+    halfExtents(): Vec3;
 }

@@ -210,9 +210,20 @@ export class Body extends EventTarget {
   angularVelocity: Vec3;
   initAngularVelocity: Vec3;
 
+  /**
+   * The shapes that make up this body. They start at 0,0,0
+   * in model space but can be modifed by shapeOffsets
+   */
   shapes: Shape[];
-
+  /**
+   * Position of a shape (in model space). Array index should
+   * match the listing in shapes[]
+   */
   shapeOffsets: Vec3[];
+  /**
+   * Rotations of a shape (in model space). Array index should
+   * match the listing in shapes[]
+   */
   shapeOrientations: Quaternion[];
 
   inertia: Vec3;
@@ -326,7 +337,7 @@ export class Body extends EventTarget {
      */
     this.force = new Vec3();
 
-    const mass = typeof (options.mass) === 'number' ? options.mass : 0;
+    const mass = options.mass ? options.mass : 0;
 
     /**
      * @property mass
@@ -369,7 +380,7 @@ export class Body extends EventTarget {
      * @type {Boolean}
      * @default true
      */
-    this.allowSleep = typeof (options.allowSleep) !== 'undefined' ? options.allowSleep : true;
+    this.allowSleep = (options.allowSleep !== 'undefined') ? options.allowSleep : true;
 
     /**
      * Current sleep state.
@@ -384,7 +395,7 @@ export class Body extends EventTarget {
      * @type {Number}
      * @default 0.1
      */
-    this.sleepSpeedLimit = typeof (options.sleepSpeedLimit) !== 'undefined' ? options.sleepSpeedLimit : 0.1;
+    this.sleepSpeedLimit = options.sleepSpeedLimit ? options.sleepSpeedLimit : 0.1;
 
     /**
      * If the body has been sleepy for this sleepTimeLimit seconds, it is considered sleeping.
@@ -392,7 +403,7 @@ export class Body extends EventTarget {
      * @type {Number}
      * @default 1
      */
-    this.sleepTimeLimit = typeof (options.sleepTimeLimit) !== 'undefined' ? options.sleepTimeLimit : 1;
+    this.sleepTimeLimit = options.sleepTimeLimit ? options.sleepTimeLimit : 1;
 
     this.timeLastSleepy = 0;
 
@@ -495,12 +506,12 @@ export class Body extends EventTarget {
      */
     this.invInertiaWorldSolve = new Mat3();
 
-    this.fixedRotation = typeof (options.fixedRotation) !== 'undefined' ? options.fixedRotation : false;
+    this.fixedRotation = (options.fixedRotation !== undefined) ? options.fixedRotation : false;
 
     /**
      * @property {Number} angularDamping
      */
-    this.angularDamping = typeof (options.angularDamping) !== 'undefined' ? options.angularDamping : 0.01;
+    this.angularDamping = (options.angularDamping !== undefined) ? options.angularDamping : 0.01;
 
 
     this.linearFactor = new Vec3(1, 1, 1);
@@ -698,13 +709,20 @@ export class Body extends EventTarget {
     this.shapes.push(shape);
     this.shapeOffsets.push(offset || new Vec3());
     this.shapeOrientations.push(orientation || new Quaternion());
-    this.updateMassProperties();
-    this.updateBoundingRadius();
-
-    this.aabbNeedsUpdate = true;
+    this.recalculateShapes();
     shape.body = this;
 
     return this;
+  }
+
+  /**
+   * If you change the shape(s) or position of the shapes this body is
+   * using you'll need to call this to recalculate the mass and bounding area
+   */
+  recalculateShapes() {
+    this.updateMassProperties();
+    this.updateBoundingRadius();
+    this.aabbNeedsUpdate = true;
   }
 
   /**
