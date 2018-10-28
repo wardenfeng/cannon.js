@@ -11,10 +11,10 @@ export interface SplitNode {
 export declare class SplitSolver extends Solver {
     iterations: number;
     tolerance: number;
-    subsolver: SplitSolver;
+    subsolver: Solver;
     nodes: any[];
     nodePool: any[];
-    constructor(subsolver: SplitSolver);
+    constructor(subsolver: Solver);
     private SplitSolver_solve_nodes;
     private SplitSolver_solve_nodePool;
     private SplitSolver_solve_eqs;

@@ -10,6 +10,9 @@ import { World } from '../world/World';
 export class Solver {
   equations: Equation[];
 
+  iterations: number;
+  tolerance: number;
+
   constructor() {
     /**
      * All equations to be solved

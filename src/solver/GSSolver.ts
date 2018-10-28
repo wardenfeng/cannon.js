@@ -13,9 +13,6 @@ import { World } from '../world/World';
  */
 export class GSSolver extends Solver {
 
-  iterations: number;
-  tolerance: number;
-
   constructor(iterations = 10, tolerance = 1e-7) {
     super();
     /**

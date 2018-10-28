@@ -20,11 +20,11 @@ export interface SplitNode {
 export class SplitSolver extends Solver {
   iterations: number;
   tolerance: number;
-  subsolver: SplitSolver;
+  subsolver: Solver;
   nodes: any[];
   nodePool: any[];
 
-  constructor(subsolver: SplitSolver) {
+  constructor(subsolver: Solver) {
     super();
     this.iterations = 10;
     this.tolerance = 1e-7;
