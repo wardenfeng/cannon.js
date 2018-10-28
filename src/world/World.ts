@@ -20,22 +20,31 @@ import { OverlapKeeper } from '../collision/OverlapKeeper';
 import { ArrayCollisionMatrix } from '../collision/ArrayCollisionMatrix';
 import { NaiveBroadphase } from '../collision/NaiveBroadphase';
 
-export class ContactEvent {
+export interface ContactEvent {
   type: string;
   bodyA: Body;
   bodyB: Body;
 }
-export class ShapeContactEvent {
+export interface ShapeContactEvent {
   type: string;
   bodyA: Body;
   bodyB: Body;
   shapeA: Shape;
   shapeB: Shape;
 }
-export class CollideEvent {
+export interface CollideEvent {
   type: string;
   body: Body;
   contact: any;
+}
+
+export interface WorldOptions {
+  gravity?: Vec3;
+  allowSleep?: boolean;
+  broadphase?: Broadphase;
+  solver?: Solver;
+  quatNormalizeFast?: boolean;
+  quatNormalizeSkip?: number;
 }
 
 /**
@@ -60,14 +69,14 @@ export class World extends EventTarget {
 
   quatNormalizeSkip: number;
 
-  quatNormalizeFast: false;
+  quatNormalizeFast: boolean;
 
   time: number;
   stepnumber: number;
   default_dt: number;
   nextId: number;
 
-  gravity: Vec3;
+  gravity = new Vec3();
 
   broadphase: Broadphase;
 
@@ -118,9 +127,9 @@ export class World extends EventTarget {
 
   idToBodyMap: any;
 
-  constructor(options?: any) {
+  constructor(options?: WorldOptions) {
     super();
-    options = options || {};
+    options = options || <WorldOptions>{};
 
     /**
      * Currently / last used timestep. Is set to -1 if not available.
@@ -136,7 +145,7 @@ export class World extends EventTarget {
      * @type {Boolean}
      * @default false
      */
-    this.allowSleep = !!options.allowSleep;
+    this.allowSleep = options.allowSleep;
 
     /**
      * All the current contacts (instances of ContactEquation) in the world.
@@ -189,17 +198,14 @@ export class World extends EventTarget {
      * @property gravity
      * @type {Vec3}
      */
-    this.gravity = new Vec3();
-    if (options.gravity) {
-      this.gravity.copy(options.gravity);
-    }
+    this.gravity = options.gravity ? this.gravity.copy(options.gravity) : new Vec3();
 
     /**
      * The broadphase algorithm to use. Default is NaiveBroadphase
      * @property broadphase
      * @type {Broadphase}
      */
-    this.broadphase = options.broadphase !== undefined ? options.broadphase : new NaiveBroadphase();
+    this.broadphase = options.broadphase ? options.broadphase : new NaiveBroadphase();
 
     /**
      * @property bodies
@@ -212,7 +218,7 @@ export class World extends EventTarget {
      * @property solver
      * @type {Solver}
      */
-    this.solver = options.solver !== undefined ? options.solver : new GSSolver();
+    this.solver = options.solver ? options.solver : new GSSolver();
 
     /**
      * @property constraints

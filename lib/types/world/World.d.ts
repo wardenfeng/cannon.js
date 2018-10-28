@@ -13,22 +13,30 @@ import { Narrowphase } from './Narrowphase';
 import { FrictionEquation } from '../equations/FrictionEquation';
 import { OverlapKeeper } from '../collision/OverlapKeeper';
 import { ArrayCollisionMatrix } from '../collision/ArrayCollisionMatrix';
-export declare class ContactEvent {
+export interface ContactEvent {
     type: string;
     bodyA: Body;
     bodyB: Body;
 }
-export declare class ShapeContactEvent {
+export interface ShapeContactEvent {
     type: string;
     bodyA: Body;
     bodyB: Body;
     shapeA: Shape;
     shapeB: Shape;
 }
-export declare class CollideEvent {
+export interface CollideEvent {
     type: string;
     body: Body;
     contact: any;
+}
+export interface WorldOptions {
+    gravity?: Vec3;
+    allowSleep?: boolean;
+    broadphase?: Broadphase;
+    solver?: Solver;
+    quatNormalizeFast?: boolean;
+    quatNormalizeSkip?: number;
 }
 export declare class World extends EventTarget {
     dt: number;
@@ -36,7 +44,7 @@ export declare class World extends EventTarget {
     contacts: any[];
     frictionEquations: FrictionEquation[];
     quatNormalizeSkip: number;
-    quatNormalizeFast: false;
+    quatNormalizeFast: boolean;
     time: number;
     stepnumber: number;
     default_dt: number;
@@ -75,7 +83,7 @@ export declare class World extends EventTarget {
         body: Body;
     };
     idToBodyMap: any;
-    constructor(options?: any);
+    constructor(options?: WorldOptions);
     private tmpRay;
     getContactMaterial(m1: Material, m2: Material): ContactMaterial;
     numObjects(): number;

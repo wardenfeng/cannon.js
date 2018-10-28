@@ -3,7 +3,7 @@ import { Body } from '../objects/Body';
 import { World } from '../world/World';
 import { Equation } from '../equations/Equation';
 
-export class SplitNode {
+export interface SplitNode {
   body: Body;
   children: Body[];
   eqs: Equation[];

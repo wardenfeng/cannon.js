@@ -1,4 +1,6 @@
 import { Solver } from './Solver';
+import { Vec3 } from '../math/Vec3';
+import { World } from '../world/World';
 
 /**
  * Constraint equation Gauss-Seidel solver.
@@ -6,7 +8,7 @@ import { Solver } from './Solver';
  * @constructor
  * @todo The spook parameters should be specified for each constraint, not globally.
  * @author schteppe / https://github.com/schteppe
- * @see https://www8.cs.umu.se/kurser/5DV058/VT09/lectures/spooknotes.pdf
+ * @see http://www8.cs.umu.se/kurser/5DV058/VT15/lectures/spooknotes.pdf
  * @extends Solver
  */
 export class GSSolver extends Solver {
@@ -14,7 +16,7 @@ export class GSSolver extends Solver {
   iterations: number;
   tolerance: number;
 
-  constructor() {
+  constructor(iterations = 10, tolerance = 1e-7) {
     super();
     /**
      * The number of solver iterations determines quality of the constraints in the world.
@@ -23,23 +25,22 @@ export class GSSolver extends Solver {
      * need more iterations.
      * @property iterations
      * @type {Number}
-     * @todo write more about solver and iterations in the wiki
      */
-    this.iterations = 10;
+    this.iterations = iterations;
 
     /**
      * When tolerance is reached, the system is assumed to be converged.
      * @property tolerance
      * @type {Number}
      */
-    this.tolerance = 1e-7;
+    this.tolerance = tolerance;
   }
 
 
   private GSSolver_solve_lambda: any[] = []; // Just temporary number holders that we want to reuse each solve.
   private GSSolver_solve_invCs: any[] = [];
   private GSSolver_solve_Bs: any[] = [];
-  solve(dt: number, world: any) {
+  solve(dt: number, world: World) {
     const
       maxIter = this.iterations,
       tolSquared = this.tolerance * this.tolerance,
@@ -59,20 +60,21 @@ export class GSSolver extends Solver {
 
     // Things that does not change during iteration can be computed once
     const invCs = this.GSSolver_solve_invCs,
-      Bs = this.GSSolver_solve_Bs,
-      lambda = this.GSSolver_solve_lambda;
+             Bs = this.GSSolver_solve_Bs,
+         lambda = this.GSSolver_solve_lambda;
     invCs.length = Neq;
     Bs.length = Neq;
     lambda.length = Neq;
+
     for (let i = 0; i !== Neq; i++) {
       const c = equations[i];
       lambda[i] = 0.0;
       Bs[i] = c.computeB(h);
-      invCs[i] = 1.0 / c.computeC();
+      const invs = 1.0 / c.computeC();
+      invCs[i] = (isNaN(invs) || !isFinite(invs)) ? 1 : invs;
     }
 
     if (Neq !== 0) {
-
       // Reset vlambda
       for (let i = 0; i !== Nbodies; i++) {
         const b = bodies[i],
@@ -84,7 +86,6 @@ export class GSSolver extends Solver {
 
       // Iterate over equations
       for (iter = 0; iter !== maxIter; iter++) {
-
         // Accumulate the total error for each iteration.
         deltalambdaTot = 0.0;
 
@@ -107,6 +108,7 @@ export class GSSolver extends Solver {
           lambda[j] += deltalambda;
 
           deltalambdaTot += deltalambda > 0.0 ? deltalambda : -deltalambda; // abs(deltalambda)
+          // deltalambdaTot += Math.abs(deltalambda);
 
           c.addToWlambda(deltalambda);
         }
@@ -132,7 +134,8 @@ export class GSSolver extends Solver {
 
       // Set the .multiplier property of each equation
       let l = equations.length;
-      const invDt = 1 / h;
+      let invDt = 1 / h;
+      invDt = (isNaN(invDt) || !isFinite(invDt)) ? 1 : invDt;
       while (l--) {
         equations[l].multiplier = lambda[l] * invDt;
       }

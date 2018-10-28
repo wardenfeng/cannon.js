@@ -626,7 +626,8 @@ export class Body extends EventTarget {
   }
 
   /**
-   * If the body is sleeping, it should be immovable / have infinite mass during solve. We solve it by having a separate "solve mass".
+   * If the body is sleeping, it should be immovable / have infinite mass during
+   * solve. We solve it by having a separate "solve mass".
    * @method updateSolveMassProperties
    */
   updateSolveMassProperties() {
