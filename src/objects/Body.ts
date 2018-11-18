@@ -114,6 +114,9 @@ export class Body extends EventTarget {
   static SLEEPING = 2;
 
   goid: string;
+  // The original shape used to create this body. Some shapes are compound
+  // shapes this will be the original shape from the caller.
+  origShape: number;
   id: number;
   // This is used by World for some reason...
   index: number;

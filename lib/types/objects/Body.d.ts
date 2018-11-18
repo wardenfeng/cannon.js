@@ -23,6 +23,7 @@ export declare class Body extends EventTarget {
     static SLEEPY: number;
     static SLEEPING: number;
     goid: string;
+    origShape: number;
     id: number;
     index: number;
     world: World;
