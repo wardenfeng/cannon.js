@@ -585,7 +585,7 @@ export class ConvexPolyhedron extends Shape {
       worldA1.copy(a);
       quatA.vmult(worldA1, worldA1);
       posA.vadd(worldA1, worldA1);
-      const planeEqWS1 = -worldA1.dot(planeNormalWS1);
+      // const planeEqWS1 = -worldA1.dot(planeNormalWS1);
 
       const otherFace = connectedFaces[e0];
       if (otherFace != undefined) {
@@ -597,8 +597,9 @@ export class ConvexPolyhedron extends Shape {
         // posA.vadd(planeNormalWS,planeNormalWS);
         planeEqWS = localPlaneEqT - planeNormalWS.dot(posA);
       } else {
-        planeNormalWS.copy(planeNormalWS1);
-        planeEqWS = planeEqWS1;
+        continue;
+        // planeNormalWS.copy(planeNormalWS1);
+        // planeEqWS = planeEqWS1;
       }
 
       // Clip face against our constructed plane
