@@ -37,7 +37,7 @@ module.exports = function (config) {
         istanbul: { noCompact: true }
       },
       reporters: [
-        { type: 'json' },
+        { type: 'lcov' },
       ],
       html: './coverage',
       dir: './coverage/',
@@ -45,7 +45,7 @@ module.exports = function (config) {
         return browser.toLowerCase().split(/[ /-]/)[0]; // returns 'chrome'
       },
     },
-    reporters: ['spec', "progress", 'coverage'],
+    reporters: ['spec', 'progress', 'coverage'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_WARN,
