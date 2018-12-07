@@ -11,3 +11,4 @@ node_modules
 # File system
 .DS_Store
 Thumbs.db
+coverage

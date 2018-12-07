@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "sourceMap": true,
     "outDir": "./types",
     "baseUrl": "src",
     "allowJs": false,
@@ -24,5 +25,9 @@
   },
   "include": [
     "./src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "lib",
   ]
 }

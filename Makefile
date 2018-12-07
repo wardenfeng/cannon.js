@@ -8,6 +8,7 @@ publish:
 
 clean:
 	rm -rf lib
+	rm -rf coverage
 
 test:
 	npm run lint

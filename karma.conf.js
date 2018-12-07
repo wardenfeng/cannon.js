@@ -3,25 +3,49 @@ module.exports = function (config) {
   config.set({
     webpack: webpackConfig,
     basePath: '',
-    frameworks: ['jasmine'],
+    frameworks: ["jasmine"],
     client:{
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
     files: [
-      './src/**/*.test.ts'
+      'src/**/*.test.ts'
     ],
     preprocessors: {
-      './src/main.ts': ['webpack'],
-      './src/**/*.test.ts': ['webpack']
+      "src/**/*.ts": ['typescript', 'webpack', 'coverage'],
     },
+    typescriptPreprocessor: {
+      // options passed to the typescript compiler
+      options: {
+          sourceMap: true,
+          target: 'es5',
+          module: 'commonjs',
+          noImplicitAny: true,
+          noResolve: true,
+          removeComments: true,
+          concatenateOutput: false
+      },
+    },
+    exclude: [
+      'lib/**/*.ts'
+    ],
     mime: {
       'text/x-typescript': ['ts','tsx']
     },
-    coverageIstanbulReporter: {
-      reports: [ 'html', 'lcovonly' ],
-      fixWebpackSourcePaths: true
+    coverageReporter: {
+      addNodeGlobals: true,
+      instrumenterOptions: {
+        istanbul: { noCompact: true }
+      },
+      reporters: [
+        { type: 'json' },
+      ],
+      html: './coverage',
+      dir: './coverage/',
+      subdir: (browser) => {
+        return browser.toLowerCase().split(/[ /-]/)[0]; // returns 'chrome'
+      },
     },
-    // reporters: ['spec'], //, 'kjhtml', 'karma-remap-istanbul'],
+    reporters: ['spec', "progress", 'coverage'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_WARN,

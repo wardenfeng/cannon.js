@@ -20,6 +20,9 @@ phases:
   pre_build:
     commands:
       - echo Entered the pre_build phase...
+      - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+      - chmod +x ./cc-test-reporter
+      - ./cc-test-reporter before-build
       - npm install
   build:
     commands:
@@ -28,6 +31,7 @@ phases:
       - make build
   post_build:
     commands:
+      - ./cc-test-reporter format-coverage -t lcov -o coverage/codeclimate.frontend.json coverage/headlesschrome/coverage-final.json
       - echo Entered the post_build phase...
       - ./publish.sh
       - echo Build completed on `date`
