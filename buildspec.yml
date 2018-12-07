@@ -3,6 +3,7 @@ version: 0.2
 env:
   variables:
     CHROME_BIN: "/usr/bin/chromium-browser"
+    # CC_TEST_REPORTER_ID:  # In CodeBuild
 
 phases:
   install:
@@ -31,7 +32,10 @@ phases:
       - make build
   post_build:
     commands:
-      - ./cc-test-reporter format-coverage -t lcov -o coverage/codeclimate.frontend.json coverage/headlesschrome/coverage-final.json
+      # - ./cc-test-reporter format-coverage -d -t lcov -o ./coverage/codeclimate.json ./coverage/headlesschrome/coverage-final.json
+      - mv coverage/headlesschrome/coverage-final.json coverage/lcov.info 
+      # - ./cc-test-reporter upload-coverage
+      - ./cc-test-reporter after-build --debug -t lcov --exit-code $?
       - echo Entered the post_build phase...
       - ./publish.sh
       - echo Build completed on `date`
