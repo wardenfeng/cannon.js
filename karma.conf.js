@@ -1,4 +1,3 @@
-// var webpackConfig = require('./webpack.config.js');
 const webpack = require('webpack');
 
 // Webpack config for testing / coverage only
