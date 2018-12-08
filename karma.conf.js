@@ -1,51 +1,70 @@
-var webpackConfig = require('./webpack.config.js');
+// var webpackConfig = require('./webpack.config.js');
+const webpack = require('webpack');
+
+// Webpack config for testing / coverage only
+const webpackTestConfig = {
+  mode: 'development',
+  module: {
+    rules: [
+      {
+        test: /\.ts$/,
+        loader: 'ts-loader?silent=true',
+        exclude: /node_modules/
+      },
+      {
+        test: /src\/.+\.ts$/,
+        exclude: /(node_modules|\.test\.ts$)/,
+        loader: 'istanbul-instrumenter-loader',
+        enforce: 'post',
+        options: {
+          esModules: true
+        }
+      }
+    ]
+  },
+  plugins: [
+    new webpack.SourceMapDevToolPlugin({
+      filename: null,
+      test: /\.(ts|js)($|\?)/i
+    })
+  ],
+  resolve: {
+    extensions: ['.ts', '.js']
+  }
+};
+
+
 module.exports = function (config) {
   config.set({
-    webpack: webpackConfig,
+    webpack: webpackTestConfig,
     basePath: '',
     frameworks: ["jasmine"],
+    singleRun: true,
     client:{
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
     files: [
-      'src/**/*.test.ts'
+      './src/**/*.ts'
+    ],
+    exclude: [
+      './src/**/*.d.ts',
     ],
     preprocessors: {
-      "src/**/*.ts": ['typescript', 'webpack', 'coverage'],
+      'src/**/!(*.test).ts': ['webpack'],
+      'src/**/*.test.ts': ['webpack']
     },
-    typescriptPreprocessor: {
-      // options passed to the typescript compiler
-      options: {
-          sourceMap: true,
-          target: 'es5',
-          module: 'commonjs',
-          noImplicitAny: true,
-          noResolve: true,
-          removeComments: true,
-          concatenateOutput: false
-      },
+
+    reporters: [ 'progress', 'coverage-istanbul' ],
+    coverageIstanbulReporter: {
+      reports: [ 'text-summary', 'lcov' ],
+      fixWebpackSourcePaths: true,
+      dir: './coverage'
     },
-    exclude: [
-      'lib/**/*.ts'
-    ],
+
     mime: {
       'text/x-typescript': ['ts','tsx']
     },
-    coverageReporter: {
-      addNodeGlobals: true,
-      instrumenterOptions: {
-        istanbul: { noCompact: true }
-      },
-      reporters: [
-        { type: 'lcov' },
-      ],
-      html: './coverage',
-      dir: './coverage/',
-      subdir: (browser) => {
-        return browser.toLowerCase().split(/[ /-]/)[0]; // returns 'chrome'
-      },
-    },
-    reporters: ['spec', 'progress', 'coverage'],
+
     port: 9876,
     colors: true,
     logLevel: config.LOG_WARN,
