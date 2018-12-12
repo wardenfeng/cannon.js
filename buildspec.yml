@@ -32,7 +32,7 @@ phases:
       - make build
   post_build:
     commands:
-      - ./cc-test-reporter format-coverage -t lcov --output coverage/lcov.info --prefix ${CODEBUILD_SRC_DIR}
+      - ./cc-test-reporter format-coverage -t lcov --prefix ${CODEBUILD_SRC_DIR}
       - ./cc-test-reporter after-build -t lcov --exit-code $?
       - echo Entered the post_build phase...
       - ./publish.sh
