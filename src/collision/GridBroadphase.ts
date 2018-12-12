@@ -227,14 +227,12 @@ export class GridBroadphase extends Broadphase {
     }
 
     // for (var zi = 0, zoff = 0; zi < nz; zi++ , zoff += zstep) {
-    //   console.log("layer " + zi);
     //   for (var yi = 0, yoff = 0; yi < ny; yi++ , yoff += ystep) {
     //     var row = '';
     //     for (var xi = 0, xoff = 0; xi < nx; xi++ , xoff += xstep) {
     //       var idx = xoff + yoff + zoff;
     //       row += ' ' + binLengths[idx];
     //     }
-    //     console.log(row);
     //   }
     // }
 
