@@ -10,9 +10,7 @@ export class Transform {
   position: Vec3;
   quaternion: Quaternion;
 
-  constructor(options?: any) {
-    options = options || {};
-
+  constructor(options: any = {}) {
     /**
      * @property {Vec3} position
      */
@@ -30,6 +28,7 @@ export class Transform {
     }
   }
 
+  static _plfTempQuat = new Quaternion();
   /**
    * @static
    * @method pointToLocaFrame
@@ -39,7 +38,7 @@ export class Transform {
    * @param {Vec3} result
    */
   static pointToLocalFrame(position: Vec3, quaternion: Quaternion, worldPoint: Vec3, result: Vec3) {
-    const tmpQuat = new Quaternion();
+    const tmpQuat = Transform._plfTempQuat;
     result = result || new Vec3();
     worldPoint.vsub(position, result);
     quaternion.conjugate(tmpQuat);
