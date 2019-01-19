@@ -831,7 +831,7 @@ export class Body extends EventTarget {
    * @param  {Vec3} relativePoint A point relative to the center of mass to apply the force on.
    */
   applyForce(force: Vec3, relativePoint: Vec3) {
-    if (this.type !== Body.DYNAMIC) { // Needed?
+    if (this.type !== Body.DYNAMIC) {
       return;
     }
 
@@ -993,7 +993,8 @@ export class Body extends EventTarget {
     this.previousPosition.copy(this.position);
     this.previousQuaternion.copy(this.quaternion);
 
-    if (!(this.type === Body.DYNAMIC || this.type === Body.KINEMATIC) || this.sleepState === Body.SLEEPING) { // Only for dynamic
+     // Only for dynamic bodies
+    if (!(this.type === Body.DYNAMIC || this.type === Body.KINEMATIC) || this.sleepState === Body.SLEEPING) {
       return;
     }
 
