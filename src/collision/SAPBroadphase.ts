@@ -71,9 +71,12 @@ export class SAPBroadphase extends Broadphase {
     }
 
     // Remove old handlers, if any
-    world.removeEventListener('addBody', this._addBodyHandler);
-    world.removeEventListener('removeBody', this._removeBodyHandler);
-
+    if(this.world)
+    {
+      this.world.removeEventListener('addBody', this._addBodyHandler);
+      this.world.removeEventListener('removeBody', this._removeBodyHandler);
+    }
+    
     // Add handlers to update the list of bodies.
     world.addEventListener('addBody', this._addBodyHandler);
     world.addEventListener('removeBody', this._removeBodyHandler);
